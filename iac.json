@@ -456,6 +456,28 @@
               }
           }
       },
+      "ReadReplicaDB": {
+          "Type": "AWS::RDS::DBInstance",
+          "Properties": {
+              "Engine": "MySQL",
+              "SourceDBInstanceIdentifier": {
+                  "Ref": "MasterDB"
+              },
+              "DBInstanceClass": "db.t2.small",
+              "AllocatedStorage": "5",
+              "Tags": [
+                  {
+                      "Key": "Name",
+                      "Value": "Read Replica Database"
+                  }
+              ]
+          },
+          "Metadata": {
+              "AWS::CloudFormation::Designer": {
+                  "id": "81d5c59e-5fe0-4e4b-8f3b-55e76e23bbe1"
+              }
+          }
+      },
       "AlarmTopic": {
           "Type": "AWS::SNS::Topic",
           "Properties": {
