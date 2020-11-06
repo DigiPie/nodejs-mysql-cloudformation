@@ -1,7 +1,14 @@
 # iac-2-tier-example
 An example of how to implement a 2-tier Infrastructure-as-Code.
 
+This README.md is a messy work-in-progress.
+
 ## Design decisions
+
+### Why CloudFormation instead of Ansible or Terraform
+
+- CloudFormation is AWS native and will always contain the latest features and options for AWS services
+- CloudFormation is state-based and AWS will figure out how to reach the desired state, whereas Ansible and Terraform are instruction-based and requires you to orchestrate your stack
 
 ### Database
 
