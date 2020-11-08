@@ -397,4 +397,16 @@ Outputs:
     Value: !GetAtt DatabaseAlarmTopic.TopicName
     Export:
       Name: !Sub ${AWS::StackName}-DatabaseAlarmTopicName
+  
+  ReadReplicaDbId:
+    Description: Read Replica Database ID
+    Value: !Ref ReadReplica
+    Export:
+      Name: !Sub ${AWS::StackName}-ReadReplicaDatabaseID
+
+  ReadReplicaDbURL:
+    Description: Read Replica Database URL
+    Value: !GetAtt ReadReplica.Endpoint.Address
+    Export:
+      Name: !Sub ${AWS::StackName}-ReadReplicaDatabaseURL
 
