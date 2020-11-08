@@ -64,7 +64,7 @@ Parameters:
     ConstraintDescription: A value of one byte or more
 
   DatabaseEngine:
-    Default: postgres
+    Default: mysql
     Type: String
     Description: Database engines - PostgreSQL, MariaDB or MySQL
     ConstraintDescription: Choose an engine from the drop down
@@ -236,6 +236,15 @@ Resources:
       - Key: Name
         Value: !Ref AWS::StackName
     DependsOn: DatabaseSubnetGroup
+
+  ReadReplica:
+    Type: AWS::RDS::DBInstance
+    Properties:
+      SourceDBInstanceIdentifier: !Ref Database
+      DBInstanceClass: !Ref DatabaseInstanceClass
+      Tags:
+      - Key: Name
+        Value: !Ref AWS::StackName
 
   DatabaseCpuAlarm:
     Type: AWS::CloudWatch::Alarm
