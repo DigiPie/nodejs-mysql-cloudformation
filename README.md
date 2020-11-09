@@ -13,11 +13,65 @@ We will be deploying the NodeJS-ExpressJS-MySQL Create-Read-Update-Delete (CRUD)
 
 ## Architecture
 
-//TODO
+![Architecture diagram](architecture_diagram.png "Architecture diagram")
+
+_Figure 1: Architecture diagram created using Lucidchart. Original diagram available [here](https://lucid.app/invitations/accept/fd990180-b2a9-4089-81ce-3f4758d11c42)._
+
+This architecture was set up with the following [architecture requirements](https://github.com/DigiPie/nodejs-mysql-cloudformation/issues/1) and [case study](https://gist.github.com/houdinisparks/b8dcd1d2b5b1179b45b0afe68351e027) in mind.
+
+<details>
+	<summary>VPC stack resources</summary>
+
+- VPC
+- Public Subnet 1 and 2: Resources inside are visible to the Internet
+- Private Subnet 1 and 2: Resources can only be reached from other resources within the VPC
+- Internet Gateway: Used by resources in the Public Subnet 1 and 2 for Internet-access
+- NAT Gateway(s): Used as a proxy by resources in Private Subnet 1 and 2 (one NAT Gateway per AZ for Production)
+- Bastion Security Group: Used by the Bastion stack
+- Database Security Group: Used by the Database stack
+- ELB and App Security Groups: Use by the Elastic Beanstalk stack
+
+</details>
+
+<details>
+	<summary>Bastion stack resources</summary>
+
+- Bastion Host: An EC2 instance in the Public Subnet 1
+- Cloudwatch Alarms: For detecting invalid SSH attempts
+
+</details>
+
+<details>
+	<summary>Database stack resources</summary>
+
+- Master Database: Master RDS instance used for storing application data (Note: in a real-world scenario, use Amazon Aurora instead, which is sadly not in free-tier)
+- Read Replica: Read Replica RDS instance used for heavy read operations on the database
+- Standby Database: Standby RDS instance in the other Private Subnet/Availability Zone (AZ) for redudancy sake (only for Production)
+- Database Subnet Group: For association with VPC Private Subnet 1 and 2
+
+</details>
+
+<details>
+	<summary>Elastic Beanstalk stack resources</summary>
+
+- Elastic Beanstalk Application
+- Elastic Beanstalk Environment
+- Auto-Scaling Group(s): Automatic scaling based on CPU utilization (2 ASGs in both AZ for Production)
+- Elastic Load Balancer: Can be configured to be Network Load Balancer (Layer-4) or Application Load Balancer (Layer-7)
+
+</details>
+
+<details>
+	<summary>Other services</summary>
+
+- S3 Bucket: Used to store the initial app to be deployed to Elastic Beanstalk when the CloudFormation stack is built
+- CodePipeline Pipeline: Used to continuously deploy the updated app from a GitHub repository to Elastic Beanstalk
+
+</details>
 
 ## Getting started
 
-Pre-requisite:
+Pre-requisites:
 
 - [EC2 key pair](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html)
 - [npm](https://www.npmjs.com/get-npm)
