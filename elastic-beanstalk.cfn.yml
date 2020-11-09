@@ -13,19 +13,10 @@ Parameters:
     MaxLength: 255
     AllowedPattern: "^[a-zA-Z][-a-zA-Z0-9]*$"
 
-  StackType:
-    Description: node, rails, python, python3 or spring
+  PlatformArn:
+    Description: The platform to run the Beanstalk application on
     Type: String
-    MinLength: 1
-    MaxLength: 255
-    AllowedValues:
-      - node
-      - rails
-      - spring
-      - python
-      - python3
-    ConstraintDescription: Specify node, rails, python, python3 or spring
-    Default: node
+    Default: arn:aws:elasticbeanstalk:ap-southeast-1::platform/Node.js 12 running on 64bit Amazon Linux 2/5.2.2
 
   EnvironmentName:
     Description: Environment name, either dev or prod.
@@ -190,7 +181,7 @@ Resources:
     Type: AWS::ElasticBeanstalk::ConfigurationTemplate
     Properties:
       ApplicationName: !Ref Application
-      PlatformArn: arn:aws:elasticbeanstalk:ap-southeast-1::platform/Node.js 12 running on 64bit Amazon Linux 2/5.2.2
+      PlatformArn: !Ref PlatformArn
       OptionSettings:
 
       - Namespace: aws:elasticbeanstalk:environment
@@ -440,10 +431,10 @@ Outputs:
     Export:
       Name: !Sub "${AWS::StackName}-EnvironmentName"
 
-  TypeOfStack:
-    Description: Stack type
-    Value: !Ref StackType
+  PlatformArn:
+    Description: The Beanstalk platform
+    Value: !Ref PlatformArn
     Export:
-      Name: !Sub "${AWS::StackName}-TypeOfStack"
+      Name: !Sub "${AWS::StackName}-PlatformArn"
 
 
