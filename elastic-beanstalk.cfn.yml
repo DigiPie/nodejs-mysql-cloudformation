@@ -118,20 +118,6 @@ Conditions:
 
   TlsEnabled: !Not [ !Equals [ !Ref SSLCertificateArn, "" ] ]
 
-Mappings:
-  # Maps stack type parameter to solution stack name string
-  StackMap:
-    node:
-      stackName: 64bit Amazon Linux 2018.03 v4.5.3 running Node.js
-    rails:
-      stackName: 64bit Amazon Linux 2018.03 v2.8.3 running Ruby 2.4 (Puma)
-    spring:
-      stackName: 64bit Amazon Linux 2018.03 v3.0.3 running Tomcat 8 Java 8
-    python:
-      stackName: 64bit Amazon Linux 2018.03 v2.7.3 running Python 2.7
-    python3:
-      stackName: 64bit Amazon Linux 2018.03 v2.7.3 running Python 3.6
-
 Resources:
 
   ElasticBeanstalkServiceRole:
